@@ -2,6 +2,7 @@ import pygame;
 
 pygame.init();
 
+# hehe
 pygame.display.set_caption('אין מנוס');
 
 # define the RGB value for white,
