@@ -10,8 +10,8 @@ pygame.display.set_caption('Rush Hour')
 clock = pygame.time.Clock()
 
 img_path = 'images/red_car.png'
-car = Car(pygame.image.load(img_path), Vector(0.0, 0.0), 0.0, 1)
-car.accelerate(Vector(1, 1))
+car = Car(pygame.image.load(img_path), Vector(0.0, 0.0), 0.0, 4)
+car.accelerate(Vector(1, 2))
 
 screen = pygame.display.set_mode((800, 600))
 

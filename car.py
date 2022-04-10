@@ -1,3 +1,5 @@
+import math
+
 from utils import scale_image, blit_rotate_center
 
 
@@ -18,10 +20,15 @@ class Car(object):
         self.position.set_y(self.position.get_y() + self.speed.get_y())
 
     def rotate(self, left=False, right=False):
-        if left:
-            self.angle += self.rotation_val
-        elif right:
-            self.angle -= self.rotation_val
+        if self.angle != self.speed.get_angle():
+            if (abs(self.speed.get_angle() - self.angle) < self.rotation_val):
+                self.angle = self.speed.get_angle()
+            elif self.angle < self.speed.get_angle():
+                self.angle += self.rotation_val
+            elif self.angle > self.speed.get_angle():
+                self.angle -= self.rotation_val
+            self.angle = self.angle % 360.0
+            print(self.angle)
 
     def draw(self, win):
         blit_rotate_center(win, self.img, (self.position.get_x(), self.position.get_y()), self.angle)
@@ -43,3 +50,6 @@ class Vector(object):
 
     def get_y(self):
         return self.y
+
+    def get_angle(self):
+        return 180 - int(math.degrees(math.atan(self.y/self.x)))
