@@ -1,49 +1,32 @@
 import pygame, sys
 from car import Car
-from car import Vector
+from vector import Vector
 from MenuButton import Button
+from constants import Constants
 
 pygame.init()
-
-# assigning values to X and Y variable
-X = 400
-Y = 400
-
-# create the display surface object
-# of specific dimension..e(X, Y).
-display_surface = pygame.display.set_mode((X, Y))
-
-# create a font object.
-# 1st parameter is the font file
-# which is present in pygame.
-# 2nd parameter is size of the font
-font = pygame.font.Font('freesansbold.ttf', 32)
-font1 = pygame.font.Font('freesansbold.ttf', 64)
+pygame.display.set_caption(Constants.PROJECT_NAME.value)
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption('Rush Hour')
-img_path = 'images/'
-car = Car(pygame.image.load(img_path + "red_car.png"), Vector(0.0, 0.0), 0.0)
+car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(0.0, 0.0), 0.0)
 car.accelerate(Vector(1, 1))
-
-screen = pygame.display.set_mode((800, 600))
-
-BG = pygame.image.load(img_path + "car.png")
+screen = pygame.display.set_mode((Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+font = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 32)
+font1 = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 64)
+BG = pygame.image.load(Constants.MENU_BACKGROUND.value)
+BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
 
 
 def play():
     running = True
     while running:
-
         screen.fill((0, 0, 0))
-        screen.blit(car.img, (car.position.get_x(), car.position.get_y()))
+        screen.blit(car.image, (car.position.get_x(), car.position.get_y()))
         car.move()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Draws the surface object to the screen.
         pygame.display.update()
         clock.tick(40)
 
@@ -61,13 +44,16 @@ def displayMenu():
         screen.blit(BG, (0, 0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
         MENU_TEXT = font1.render('Welcome!', True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(400, 100))
+        MENU_RECT = MENU_TEXT.get_rect(center=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 10))
 
-        PLAY_BUTTON = Button(image=pygame.image.load(img_path + "Play Rect.png"), pos=(400, 200),
+        PLAY_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                             pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 3.5),
                              text_input="PLAY", font=font, base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load(img_path + "Play Rect.png"), pos=(400, 350),
+        OPTIONS_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                                pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
                                 text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
-        ABOUT_BUTTON = Button(image=pygame.image.load(img_path + "Play Rect.png"), pos=(400, 500),
+        ABOUT_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 1.5),
                               text_input="ABOUT", font=font, base_color="#d7fcd4", hovering_color="White")
 
         screen.blit(MENU_TEXT, MENU_RECT)

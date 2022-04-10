@@ -1,8 +1,11 @@
-class Car(object):
-    def __init__(self, img, position, angle):
-        self.img = img
+from abstract_sprite import AbstractSprite
+from vector import Vector
+
+
+class Car(AbstractSprite):
+    def __init__(self, image, position, angle):
+        super(Car, self).__init__(image, position.get_x(), position.get_y())
         self.speed = Vector(0.0, 0.0)
-        self.position = Vector(position.get_x(), position.get_y())
         self.angle = angle
 
     def accelerate(self, vector):
@@ -12,21 +15,3 @@ class Car(object):
     def move(self):
         self.position.set_x(self.position.get_x() + self.speed.get_x())
         self.position.set_y(self.position.get_y() + self.speed.get_y())
-
-
-class Vector(object):
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def set_x(self, x):
-        self.x = x
-
-    def set_y(self, y):
-        self.y = y
-
-    def get_x(self):
-        return self.x
-
-    def get_y(self):
-        return self.y
