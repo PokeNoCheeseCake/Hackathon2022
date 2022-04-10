@@ -7,8 +7,10 @@ from constants import Constants
 pygame.init()
 pygame.display.set_caption(Constants.PROJECT_NAME.value)
 clock = pygame.time.Clock()
-car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(0.0, 0.0), 0.0)
-car.accelerate(Vector(1, 1))
+
+car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(400, 300), 0.0, 2)
+wanted_angle = (car.angle + 180) % 360
+
 screen = pygame.display.set_mode((Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
 font = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 32)
 font1 = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 64)
@@ -17,11 +19,18 @@ BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIG
 
 
 def play():
+    car.speed = 5
+
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(car.image, (car.position.get_x(), car.position.get_y()))
-        car.move()
+
+        if car.angle != wanted_angle:
+            car.move()
+            car.rotate(wanted_angle)
+            print(str(wanted_angle) + " " + str(car.angle))
+
+        car.draw(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -39,7 +48,7 @@ def about():
     pass
 
 
-def displayMenu():
+def display_menu():
     while True:
         screen.blit(BG, (0, 0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
@@ -77,4 +86,4 @@ def displayMenu():
         pygame.display.update()
 
 
-displayMenu()
+display_menu()
