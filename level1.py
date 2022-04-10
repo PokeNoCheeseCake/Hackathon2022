@@ -111,9 +111,6 @@ def update_car(screen, car, wanted_angle, move=False):
 
     car.draw(screen)
 
-    # pygame.display.update()
-
-
 
 
 
