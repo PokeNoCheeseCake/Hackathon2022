@@ -3,6 +3,8 @@ from enum import Enum
 
 class Constants(Enum):
     RED_CAR_IMG = 'images/red_car.png'
+    BLUE_CAR_IMG = 'images/blue_car.png'
+    GREEN_CAR_IMG = 'images/green_car.png'
     PROJECT_NAME = 'Rush Hour'
     MENU_TEXT_FONT = 'freesansbold.ttf'
     MENU_BACKGROUND = 'images/main_menu_bg.png'

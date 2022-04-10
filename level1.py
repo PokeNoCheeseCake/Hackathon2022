@@ -1,77 +1,117 @@
 # # import pygame module in this program
 import pygame
+from car import Car
+from vector import Vector
+from constants import Constants
+from number import Number
 
-pygame.init()
+def play_level():
+    clock = pygame.time.Clock()
 
-# define the RGB value
-# for white colour
-white = (255, 255, 255)
-  
-# assigning values to X and Y variable
-X = 800
-Y = 600
-  
-# create the display surface object
-# of specific dimension..e(X, Y).
-display_surface = pygame.display.set_mode((X, Y))
-  
-# set the pygame window name
-pygame.display.set_caption('Image')
-  
-# create a surface object, image is drawn on it.
-image = pygame.image.load('images/4-side-road.jpg')
+    # assigning values to X and Y variable
+    X = Constants.GAME_WIDTH.value
+    Y = Constants.GAME_HEIGHT.value
 
-image = pygame.transform.scale(image, (800, 600))
+    screen = pygame.display.set_mode((Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
 
-class Number(pygame.sprite.Sprite):
-    def __init__(self, num):
-        super().__init__()
-        self.image = pygame.image.load("images/% sdigitcol.png" % num).convert_alpha(display_surface)
-        self.rect = self.image.get_rect()
-        if num == 1:
-            self.rect[0] = 5
-            self.rect[1] = 5
-        if num == 2:
-            self.rect[0] = 27
-            self.rect[1] = 40
-        if num == 3:
-            self.rect[0] = 52
-            self.rect[1] = 3
-        print(self.rect)
-    def move(self):
-        self.pos = self.pos.move(0, self.speed)
-        if self.pos.right > 600:
-            self.pos.left = 0
-    def draw(self, surface):
-        surface.blit(self.image, self.rect) 
+    # create the display surface object
+    # of specific dimension..e(X, Y).
+    display_surface = pygame.display.set_mode((X, Y))
 
-number1 = Number(1)
-number2 = Number(2)
-number3 = Number(3)
-number_group = pygame.sprite.Group()
-number_group.add(number1, number2, number3)
+    # set the pygame window name
+    pygame.display.set_caption('Image')
 
-# infinite loop
-while True :
+    number1 = Number(1)
+    number2 = Number(2)
+    number3 = Number(3)
+    number_group = pygame.sprite.Group()
 
-    for event in pygame.event.get() :
-  
-        # if event object type is QUIT
-        # then quitting the pygame
-        # and program both.
-        if event.type == pygame.QUIT :
-  
-            # deactivates the pygame library
-            pygame.quit()
-  
-            # quit the program.
-            quit()
-  
-        # Draws the surface object to the screen.  
+    number_group.add(number1, number2, number3)
+
+    car_array = []
+
+    car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(635, 632), 0.0, 1.5)
+    car.speed = 10
+    wanted_angle = (car.angle + 90) % 360
+
+    car2 = Car(pygame.image.load(Constants.BLUE_CAR_IMG.value), Vector(860, 250), 90.0, 1.5)
+    car2.speed = 10
+    wanted_angle2 = car2.angle
+
+    car3 = Car(pygame.image.load(Constants.GREEN_CAR_IMG.value), Vector(360, 70), 180.0, 1.5)
+    car3.speed = 10
+    wanted_angle3 = (car.angle - 90) % 360
+
+    car_array.append({
+        'car': car2,
+        'wanted_angle': wanted_angle2
+    });
+
+    car_array.append({
+        'car': car3,
+        'wanted_angle': wanted_angle3
+    });
+
+    car_array.append({
+        'car': car,
+        'wanted_angle': wanted_angle
+    });
+
+    current_car = 0
+
+    # infinite loop
+    while True:
+        car_index = current_car
+
+        # create a surface object, image is drawn on it.
+        image = pygame.image.load('images/4-side-road.jpg')
+
+        image = pygame.transform.scale(image, (X, Y))
+
+        screen.blit(image, image.get_rect())
+
+        number_group.draw(display_surface)
+
+        while car_index < len(car_array):
+            obj = car_array[car_index];
+
+            if (car_index == current_car):
+                update_car(screen, obj['car'], obj['wanted_angle'], True)
+                if obj['car'].position.get_x() > X or obj['car'].position.get_x() < 0 or obj['car'].position.get_y() > Y or obj['car'].position.get_y() < 0:
+                    current_car = current_car + 1
+            else:
+                update_car(screen, obj['car'], obj['wanted_angle'], False)
+
+            car_index = car_index + 1
+
+        for event in pygame.event.get() :
+
+            # if event object type is QUIT
+            # then quitting the pygame
+            # and program both.
+            if event.type == pygame.QUIT :
+
+                # deactivates the pygame library
+                pygame.quit()
+
+                # quit the program.
+                quit()
+
+        # Draws the surface object to the screen.
         pygame.display.update()
         pygame.display.flip()
-        display_surface.blit(image, (0, 0))
-        number_group.draw(display_surface)
+        clock.tick(40)
+
+def update_car(screen, car, wanted_angle, move=False):
+    if move:
+        if car.angle != wanted_angle:
+            car.rotate(wanted_angle)
+
+        car.move()
+
+    car.draw(screen)
+
+    # pygame.display.update()
 
 
 
