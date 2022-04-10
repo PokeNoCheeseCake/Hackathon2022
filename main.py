@@ -14,7 +14,17 @@ BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIG
 
 
 def laws():
-    pass
+    BG2 = pygame.image.load(Constants.LAW.value)
+    BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+    running = True
+    while running:
+        screen.blit(BG2, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
 
 
 def about():
@@ -41,7 +51,7 @@ def display_menu():
         PLAY_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 3.5),
                              text_input="PLAY", font=font, base_color="#d7fcd4", hovering_color="White")
-        LAWES_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+        LAWS_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
                               pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
                               text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
         ABOUT_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
@@ -50,7 +60,7 @@ def display_menu():
 
         screen.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, LAWES_BUTTON, ABOUT_BUTTON]:
+        for button in [PLAY_BUTTON, LAWS_BUTTON, ABOUT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
 
@@ -62,7 +72,7 @@ def display_menu():
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     # play()
                     level1.play_level()
-                if LAWES_BUTTON.checkForInput(MENU_MOUSE_POS):
+                if LAWS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     laws()
                 if ABOUT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     about()
