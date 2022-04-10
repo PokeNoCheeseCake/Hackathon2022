@@ -1,6 +1,7 @@
-import pygame
+import pygame, sys
 from car import Car
-from car import Vector
+from vector import Vector
+from MenuButton import Button
 from constants import Constants
 
 pygame.init()
@@ -8,18 +9,72 @@ pygame.display.set_caption(Constants.PROJECT_NAME.value)
 clock = pygame.time.Clock()
 car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(0.0, 0.0), 0.0)
 car.accelerate(Vector(1, 1))
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+font = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 32)
+font1 = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 64)
+BG = pygame.image.load(Constants.MENU_BACKGROUND.value)
+BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
 
-running = True
-while running:
-    screen.fill((0, 0, 0))
-    screen.blit(car.image, (car.position.get_x(), car.position.get_y()))
-    car.move()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def play():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        screen.blit(car.image, (car.position.get_x(), car.position.get_y()))
+        car.move()
 
-    # Draws the surface object to the screen.
-    pygame.display.update()
-    clock.tick(40)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
+        clock.tick(40)
+
+
+def options():
+    pass
+
+
+def about():
+    pass
+
+
+def displayMenu():
+    while True:
+        screen.blit(BG, (0, 0))
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+        MENU_TEXT = font1.render('Welcome!', True, "#b68f40")
+        MENU_RECT = MENU_TEXT.get_rect(center=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 10))
+
+        PLAY_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                             pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 3.5),
+                             text_input="PLAY", font=font, base_color="#d7fcd4", hovering_color="White")
+        OPTIONS_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                                pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
+                                text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
+        ABOUT_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 1.5),
+                              text_input="ABOUT", font=font, base_color="#d7fcd4", hovering_color="White")
+
+        screen.blit(MENU_TEXT, MENU_RECT)
+
+        for button in [PLAY_BUTTON, OPTIONS_BUTTON, ABOUT_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    play()
+                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    options()
+                if ABOUT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    about()
+
+        pygame.display.update()
+
+
+displayMenu()

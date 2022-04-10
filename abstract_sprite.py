@@ -2,13 +2,13 @@ from vector import Vector
 
 
 class AbstractSprite(object):
-    def __init__(self, image, x, y):
+    def __init__(self, image, position):
         self.image = image
-        self.position = Vector(x, y)
+        self.position = Vector(position.get_x(), position.get_y())
 
-    def set_position(self, x, y):
-        self.position.set_x(x)
-        self.position.set_y(y)
+    def set_position(self, position):
+        self.position.set_x(position.get_x())
+        self.position.set_y(position.get_y())
 
     def get_position(self):
         return self.position
