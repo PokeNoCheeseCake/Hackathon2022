@@ -31,12 +31,22 @@ def play():
         clock.tick(40)
 
 
-def options():
+def lawes():
     pass
 
 
 def about():
-    pass
+    BG2 = pygame.image.load(Constants.ABOUT.value)
+    BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+    running = True
+    while running:
+        screen.blit(BG2, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
 
 
 def displayMenu():
@@ -49,16 +59,16 @@ def displayMenu():
         PLAY_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 3.5),
                              text_input="PLAY", font=font, base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
-                                pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
-                                text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
+        LAWES_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
+                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
+                              text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
         ABOUT_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
                               pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 1.5),
                               text_input="ABOUT", font=font, base_color="#d7fcd4", hovering_color="White")
 
         screen.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, ABOUT_BUTTON]:
+        for button in [PLAY_BUTTON, LAWES_BUTTON, ABOUT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
 
@@ -69,8 +79,8 @@ def displayMenu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     play()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
+                if LAWES_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    lawes()
                 if ABOUT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     about()
 
