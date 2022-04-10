@@ -1,9 +1,5 @@
 # # import pygame module in this program
 import pygame
-import PIL
-# activate the pygame library .
-# initiate pygame and give permission
-# to use pygame's functionality.
 
 pygame.init()
 
@@ -12,8 +8,8 @@ pygame.init()
 white = (255, 255, 255)
   
 # assigning values to X and Y variable
-X = 370
-Y = 370
+X = 800
+Y = 600
   
 # create the display surface object
 # of specific dimension..e(X, Y).
@@ -24,6 +20,8 @@ pygame.display.set_caption('Image')
   
 # create a surface object, image is drawn on it.
 image = pygame.image.load('images/4-side-road.jpg')
+
+image = pygame.transform.scale(image, (800, 600))
 
 class Number(pygame.sprite.Sprite):
     def __init__(self, num):
@@ -55,13 +53,7 @@ number_group.add(number1, number2, number3)
 
 # infinite loop
 while True :
-    # copying the image surface object
-    # to the display surface object at
-    # (0, 0) coordinate.
-    # ^^^^^^ display_surface.blit(image, (0, 0))
-  
-    # iterate over the list of Event objects
-    # that was returned by pygame.event.get() method.
+
     for event in pygame.event.get() :
   
         # if event object type is QUIT
@@ -80,89 +72,6 @@ while True :
         pygame.display.flip()
         display_surface.blit(image, (0, 0))
         number_group.draw(display_surface)
-
-# import pygame, sys
-# from pygame.locals import *
-# import random
- 
-# pygame.init()
- 
-# FPS = 60
-# FramePerSec = pygame.time.Clock()
- 
-# BLUE  = (0, 0, 255)
-# RED   = (255, 0, 0)
-# GREEN = (0, 255, 0)
-# BLACK = (0, 0, 0)
-# WHITE = (255, 255, 255)
- 
-# # Screen information
-# SCREEN_WIDTH = 400
-# SCREEN_HEIGHT = 600
- 
-# DISPLAYSURF = pygame.display.set_mode((400,600))
-# DISPLAYSURF.fill(BLACK)
-# pygame.display.set_caption("Game")
- 
-# class Enemy(pygame.sprite.Sprite):
-#       def __init__(self):
-#         super().__init__() 
-#         self.image = pygame.image.load("Enemy.png")
-#         self.rect = self.image.get_rect()
-#         self.rect.center=(random.randint(40,SCREEN_WIDTH-40),0) 
- 
-#       def move(self):
-#         self.rect.move_ip(0,10)
-#         if (self.rect.bottom > 600):
-#             self.rect.top = 0
-#             self.rect.center = (random.randint(30, 370), 0)
- 
-#       def draw(self, surface):
-#         surface.blit(self.image, self.rect) 
- 
- 
-# class Player(pygame.sprite.Sprite):
-#     def __init__(self):
-#         super().__init__() 
-#         self.image = pygame.image.load("Player.png")
-#         self.rect = self.image.get_rect()
-#         self.rect.center = (160, 520)
- 
-#     def update(self):
-#         pressed_keys = pygame.key.get_pressed()
-#        #if pressed_keys[K_UP]:
-#             #self.rect.move_ip(0, -5)
-#        #if pressed_keys[K_DOWN]:
-#             #self.rect.move_ip(0,5)
-         
-#         if self.rect.left > 0: 
-#               if pressed_keys[K_LEFT]:
-#                   self.rect.move_ip(-5, 0)
-#         if self.rect.right < SCREEN_WIDTH:        
-#               if pressed_keys[K_RIGHT]:
-#                   self.rect.move_ip(5, 0)
- 
-#     def draw(self, surface):
-#         surface.blit(self.image, self.rect)     
- 
-         
-# P1 = Player()
-# E1 = Enemy()
- 
-# while True:     
-#     for event in pygame.event.get():              
-#         if event.type == QUIT:
-#             pygame.quit()
-#             sys.exit()
-#     P1.update()
-#     E1.move()
-     
-#     DISPLAYSURF.fill(BLACK)
-#     P1.draw(DISPLAYSURF)
-#     E1.draw(DISPLAYSURF)
-         
-#     pygame.display.update()
-#     FramePerSec.tick(FPS)
 
 
 
