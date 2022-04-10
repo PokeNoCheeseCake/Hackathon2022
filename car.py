@@ -4,7 +4,7 @@ from vector import Vector
 
 class Car(AbstractSprite):
     def __init__(self, image, position, angle):
-        super(Car, self).__init__(image, position.get_x(), position.get_y())
+        super(Car, self).__init__(image, position)
         self.speed = Vector(0.0, 0.0)
         self.angle = angle
 
