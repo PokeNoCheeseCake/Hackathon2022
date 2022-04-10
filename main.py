@@ -41,7 +41,18 @@ def play():
 
 
 def lawes():
-    pass
+    BG2 = pygame.image.load(Constants.LAW.value)
+    BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+    running = True
+    while running:
+        screen.blit(BG2, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
+
 
 
 def about():

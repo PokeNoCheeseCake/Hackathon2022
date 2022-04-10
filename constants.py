@@ -8,5 +8,6 @@ class Constants(Enum):
     MENU_BACKGROUND = 'images/main_menu_bg.png'
     BUTTON_RECT = 'images/button_rectangle.png'
     ABOUT = 'images/About.png'
+    LAW = 'images/orYarok.png'
     GAME_WIDTH = 1024
     GAME_HEIGHT = 768
