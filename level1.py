@@ -58,6 +58,48 @@ def play_level():
     });
 
     current_car = 0
+    count_placed_numbers = 0
+
+    car_index = current_car
+
+    # create a surface object, image is drawn on it.
+    image = pygame.image.load('images/4-side-road.jpg')
+
+    image = pygame.transform.scale(image, (X, Y))
+
+    screen.blit(image, image.get_rect())
+
+    number_group.draw(display_surface)
+
+    dragged = pygame.sprite.Group()
+    
+    while car_index < len(car_array):
+        obj = car_array[car_index]
+        update_car(screen, obj['car'], obj['wanted_angle'], False)
+        car_index = car_index + 1
+        print(car_index)
+        pygame.display.update()
+
+    while count_placed_numbers <= 3:
+        for event in pygame.event.get() :
+            if event.type == pygame.QUIT:
+            # deactivates the pygame library
+                pygame.quit()
+            # quit the program.
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                dragged.add(x for x in number_group if x.rect.collidepoint(event.pos))       
+            elif event.type == pygame.MOUSEBUTTONUP:
+                count_placed_numbers+=1
+                dragged.empty()
+            elif event.type == pygame.MOUSEMOTION:
+                dragged.update(event.rel)
+            
+            #remove this for solitaire
+            screen.blit(image, image.get_rect())
+            number_group.draw(screen)
+            pygame.display.update()
+            pygame.display.flip()
 
     # infinite loop
     while True:
@@ -73,7 +115,7 @@ def play_level():
         number_group.draw(display_surface)
 
         while car_index < len(car_array):
-            obj = car_array[car_index];
+            obj = car_array[car_index]
 
             if (car_index == current_car):
                 update_car(screen, obj['car'], obj['wanted_angle'], True)
@@ -118,59 +160,3 @@ def update_car(screen, car, wanted_angle, move=False):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# pygame.init()
-# screen = pygame.display.set_mode((128, 128))
-# clock = pygame.time.Clock()
-
-# counter, text = 0, '0'.rjust(3)
-# pygame.time.set_timer(pygame.USEREVENT, 1000)
-# font = pygame.font.SysFont('Consolas', 30)
-
-# run = True
-# while run:
-#     for e in pygame.event.get():
-#         if e.type == pygame.USEREVENT: 
-#             counter += 1
-#             text = str(counter).rjust(3) if counter > 0 else 'boom!'
-#         if e.type == pygame.QUIT: 
-#             run = False
-
-#     screen.fill((255, 255, 255))
-#     screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
-#     pygame.display.flip()
-#     clock.tick(60)
-
-# screen = pygame.display.set_mode((640, 480))
-# player = pygame.image.load(r'car 1.png').convert()
-# background = pygame.image.load(r'4-side-road.jpg').convert()
-# screen.blit(background, (0, 0))
-# objects = []
-# for x in range(10):                    #create 10 objects</i>
-#     o = GameObject(player, x*40, x)
-#     objects.append(o)
-# while 1:
-#     for event in pygame.event.get():
-#         if event.type in (pygame.QUIT, pygame.KEYDOWN):
-#             sys.exit()
-#     for o in objects:
-#         screen.blit(background, o.pos, o.pos)
-#     for o in objects:
-#         o.move()
-#         screen.blit(o.image, o.pos)
-#     pygame.display.update()
-#     pygame.time.delay(100)
-
-    
