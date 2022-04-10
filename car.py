@@ -6,29 +6,24 @@ from utils import scale_image, blit_rotate_center
 class Car(object):
     def __init__(self, img, position, angle, rotation_val):
         self.img = img
-        self.speed = Vector(0.0, 0.0)
+        self.speed = 0
         self.position = Vector(position.get_x(), position.get_y())
         self.angle = angle
         self.rotation_val = rotation_val
 
-    def accelerate(self, vector):
-        self.speed.set_x(self.speed.get_x() + vector.get_x())
-        self.speed.set_y(self.speed.get_y() + vector.get_y())
-
     def move(self):
-        self.position.set_x(self.position.get_x() + self.speed.get_x())
-        self.position.set_y(self.position.get_y() + self.speed.get_y())
+        self.position.set_x(self.position.get_x() - self.speed * math.cos(math.radians(self.angle)))
+        self.position.set_y(self.position.get_y() + self.speed * math.sin(math.radians(self.angle)))
 
-    def rotate(self, left=False, right=False):
-        if self.angle != self.speed.get_angle():
-            if (abs(self.speed.get_angle() - self.angle) < self.rotation_val):
-                self.angle = self.speed.get_angle()
-            elif self.angle < self.speed.get_angle():
+    def rotate(self, wanted_angle):
+        if self.angle != wanted_angle:
+            if (abs(wanted_angle - self.angle) < self.rotation_val):
+                self.angle = wanted_angle
+            elif ((wanted_angle - self.angle) % 360) <= ((self.angle - wanted_angle) % 360):
                 self.angle += self.rotation_val
-            elif self.angle > self.speed.get_angle():
+            elif ((wanted_angle - self.angle) % 360) > ((self.angle - wanted_angle) % 360):
                 self.angle -= self.rotation_val
             self.angle = self.angle % 360.0
-            print(self.angle)
 
     def draw(self, win):
         blit_rotate_center(win, self.img, (self.position.get_x(), self.position.get_y()), self.angle)
@@ -51,5 +46,13 @@ class Vector(object):
     def get_y(self):
         return self.y
 
-    def get_angle(self):
-        return 180 - int(math.degrees(math.atan(self.y/self.x)))
+    # def get_angle(self):
+    #     wanted_angle = 0
+    #     if self.x == 0:
+    #         if self.y >= 0:
+    #             wanted_angle = 90
+    #         else:
+    #             wanted_angle = 270
+    #     else:
+    #         wanted_angle = int(math.degrees(math.atan(self.y / self.x)))
+    #     return 180 - wanted_angle
