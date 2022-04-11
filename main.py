@@ -7,7 +7,7 @@ import level1
 
 pygame.init()
 pygame.display.set_caption(Constants.PROJECT_NAME.value)
-
+clock = pygame.time.Clock()
 screen = pygame.display.set_mode((Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
 font = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 32)
 font1 = pygame.font.Font(Constants.MENU_TEXT_FONT.value, 64)
@@ -95,12 +95,30 @@ def display_menu():
                     # play()
                     success = level1.play_level()
 
-                    if success:
-                        # play level 2!
+                    while success:
                         success_image = pygame.image.load(Constants.LEVEL_1_SUCCESS.value)
                         screen.blit(success_image, (Constants.GAME_WIDTH.value / 4,
                                                     Constants.GAME_HEIGHT.value / 4))
+                        for s_event in pygame.event.get():
+                            if s_event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit(0)
+                            if s_event.type == pygame.MOUSEBUTTONDOWN:
+                                mouse_x, mouse_y = pygame.mouse.get_pos()
+                                # menu button: top = 420, bot = 455, left = 532, right = 729
+                                if 420 <= mouse_y <= 455 and 532 <= mouse_x <= 729:
+                                    # return to main menu
+                                    success = False
+                                    break
+                                # next button: top = 420, bot = 455, left = 532, right = 729
+                                elif 420 <= mouse_y <= 455 and 311 <= mouse_x <= 511:
+                                    # play level 2!
+                                    success = False
+                                    break
+
                         pygame.display.update()
+                        pygame.display.flip()
+                        clock.tick(40)
                 if LAWS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     laws()
                 if ABOUT_BUTTON.checkForInput(MENU_MOUSE_POS):
