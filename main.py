@@ -18,11 +18,11 @@ BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIG
 def laws():
     BG2 = pygame.image.load(Constants.LAW.value)
     BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+    back_img = pygame.image.load(Constants.BUTTON_BACK.value)
+    back_img = pygame.transform.scale(back_img, (50, 50))
 
     while True:
         screen.blit(BG2, (0, 0))
-        back_img = pygame.image.load(Constants.BUTTON_BACK.value)
-        back_img = pygame.transform.scale(back_img, (50, 50))
         screen.blit(back_img, (Constants.GAME_WIDTH.value - 60, 0))
 
         for event in pygame.event.get():
@@ -93,7 +93,14 @@ def display_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     # play()
-                    level1.play_level()
+                    success = level1.play_level()
+
+                    if success:
+                        # play level 2!
+                        success_image = pygame.image.load(Constants.LEVEL_1_SUCCESS.value)
+                        screen.blit(success_image, (Constants.GAME_WIDTH.value / 4,
+                                                    Constants.GAME_HEIGHT.value / 4))
+                        pygame.display.update()
                 if LAWS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     laws()
                 if ABOUT_BUTTON.checkForInput(MENU_MOUSE_POS):

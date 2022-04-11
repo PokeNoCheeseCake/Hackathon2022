@@ -12,6 +12,8 @@ class Constants(Enum):
     BUTTON_RECT = 'images/button_rectangle.png'
     BUTTON_BACK = 'images/back_button.png'
     BUTTON_INFO = 'images/information_button_2.png'
+    LEVEL_1_FAIL = 'images/level_1_fail.png'
+    LEVEL_1_SUCCESS = 'images/level_1_success.png'
     ABOUT = 'images/About.png'
     LAW = 'images/orYarok.png'
     GAME_WIDTH = 1024
