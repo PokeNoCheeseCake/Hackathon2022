@@ -15,21 +15,19 @@ class Number(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("images/% sdigitcol.png" % num).convert_alpha(display_surface)
         self.rect = self.image.get_rect()
+        self.num = num
         if num == 1:
             self.rect[0] = 5
             self.rect[1] = 5
         if num == 2:
-            self.rect[0] = 27
-            self.rect[1] = 40
+            self.rect[0] = 35
+            self.rect[1] = 4
         if num == 3:
-            self.rect[0] = 52
-            self.rect[1] = 3
-        print(self.rect)
+            self.rect[0] = 68
+            self.rect[1] = 5
 
-    def move(self):
-        self.pos = self.pos.move(0, self.speed)
-        if self.pos.right > 600:
-            self.pos.left = 0
+    def update(self, rel):
+        self.rect.move_ip(rel)
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        surface.blit(self.image, self.rect) 
