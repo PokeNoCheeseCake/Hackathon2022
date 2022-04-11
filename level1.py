@@ -42,14 +42,14 @@ def play_level():
     wanted_angle3 = (car.angle - 90) % 360
 
     car_array.append({
-        'car': car2,
-        'wanted_angle': wanted_angle2,
+        'car': car3,
+        'wanted_angle': wanted_angle3,
         'num': 0
     })
 
     car_array.append({
-        'car': car3,
-        'wanted_angle': wanted_angle3,
+        'car': car2,
+        'wanted_angle': wanted_angle2,
         'num': 0
     })
 
