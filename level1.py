@@ -1,4 +1,7 @@
 # # import pygame module in this program
+import sys
+from time import sleep
+
 import pygame
 from car import Car
 from vector import Vector
@@ -77,9 +80,7 @@ def play_level():
 
     # create a surface object, image is drawn on it.
     image = pygame.image.load('images/4-side-road.jpg')
-
     image = pygame.transform.scale(image, (X, Y))
-
     screen.blit(image, image.get_rect())
 
     number_group.draw(display_surface)
@@ -87,14 +88,16 @@ def play_level():
     dragged = pygame.sprite.Group()
 
     dragged_num = None
+    back_img = pygame.image.load(Constants.BUTTON_BACK.value)
+    back_img = pygame.transform.scale(back_img, (50, 50))
+    info_img = pygame.image.load(Constants.BUTTON_INFO.value)
 
     while count_placed_numbers < 3:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # deactivates the pygame library
+                # deactivate the pygame library and exit
                 pygame.quit()
-                # quit the program.
-                quit()
+                sys.exit(0)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for x in number_group:
                     if x.rect.collidepoint(event.pos):
@@ -102,12 +105,33 @@ def play_level():
                         for obj in car_array:
                             if obj['num'] == x.num:
                                 is_placed = True
-                        if is_placed == False:
+                        if not is_placed:
                             dragged.add(x)
                             dragged_num = x
+
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                # back button: top = 0, bot = 45, left = 968, right = 1011
+                if 0 <= mouse_y <= 45 and 968 <= mouse_x <= 1011:
+                    # return to main menu
+                    return
+
+                # info button: right = 48, left = 0, # up = 720, down = 768
+                if 0 <= mouse_x <= 48 and 768 >= mouse_y >= 720:
+                    # display laws
+                    bg2 = pygame.image.load(Constants.LAW.value)
+                    bg2 = pygame.transform.scale(bg2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+                    running = True
+                    while running:
+                        screen.blit(bg2, (0, 0))
+
+                        for law_event in pygame.event.get():
+                            if law_event.type == pygame.QUIT:
+                                running = False
+
+                        pygame.display.update()
             elif event.type == pygame.MOUSEBUTTONUP:
                 dragged.empty()
-                if dragged_num != None:
+                if dragged_num is not None:
                     for obj in car_array:
                         if near_car(obj['car'], dragged_num.rect.x, dragged_num.rect.y):
                             if obj['num'] == 0:
@@ -122,6 +146,8 @@ def play_level():
 
         car_index = 0
         while car_index < len(car_array):
+            screen.blit(back_img, (Constants.GAME_WIDTH.value - 60, 0))
+            screen.blit(info_img, (0, Constants.GAME_HEIGHT.value - 50))
             obj = car_array[car_index]
             update_car(screen, obj['car'], obj['wanted_angle'], False)
             car_index = car_index + 1
@@ -139,18 +165,18 @@ def play_level():
 
         # create a surface object, image is drawn on it.
         image = pygame.image.load('images/4-side-road.jpg')
-
         image = pygame.transform.scale(image, (X, Y))
-
         screen.blit(image, image.get_rect())
 
+        screen.blit(back_img, (Constants.GAME_WIDTH.value - 60, 0))
+        screen.blit(info_img, (0, Constants.GAME_HEIGHT.value - 50))
         blit_rotate_center(screen, stop_sign, (700, 600), 0)
 
         while car_index < len(car_array):
             obj = car_array[car_index]
             bad_car = None
 
-            if (car_index == current_car):
+            if car_index == current_car:
                 update_car(screen, obj['car'], obj['wanted_angle'], True)
 
                 weird_num = obj['num'] - 1
@@ -179,23 +205,51 @@ def play_level():
             car_index = car_index + 1
 
         for event in pygame.event.get():
-
-            # if event object type is QUIT
-            # then quitting the pygame
-            # and program both.
             if event.type == pygame.QUIT:
-                # deactivates the pygame library
                 pygame.quit()
-
-                # quit the program.
-                quit()
+                sys.exit(0)
 
         # Draws the surface object to the screen.
         pygame.display.update()
         pygame.display.flip()
         clock.tick(40)
 
-    return success
+    if not success:
+        while True:
+            failure_image = pygame.image.load(Constants.LEVEL_1_FAIL.value)
+            screen.blit(failure_image, (Constants.GAME_WIDTH.value / 4,
+                                        Constants.GAME_HEIGHT.value / 4))
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit(0)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    # menu button: top = 410, bot = 462, left = 524, right = 734
+                    if 410 <= mouse_y <= 462 and 524 <= mouse_x <= 734:
+                        # return to main menu
+                        return
+                    elif 410 <= mouse_y <= 462 and 306 <= mouse_x <= 507:
+                        # display laws
+                        bg2 = pygame.image.load(Constants.LAW.value)
+                        bg2 = pygame.transform.scale(bg2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
+                        running = True
+                        while running:
+                            screen.blit(bg2, (0, 0))
+
+                            for law_event in pygame.event.get():
+                                if law_event.type == pygame.QUIT:
+                                    running = False
+
+                            pygame.display.update()
+
+            pygame.display.update()
+            pygame.display.flip()
+            clock.tick(40)
+
+    else:
+        return success
 
 
 def update_car(screen, car, wanted_angle, move=False):

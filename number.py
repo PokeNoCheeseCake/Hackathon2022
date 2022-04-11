@@ -9,11 +9,12 @@ Y = Constants.GAME_HEIGHT.value
 # of specific dimension..e(X, Y).
 display_surface = pygame.display.set_mode((X, Y))
 
+
 class Number(pygame.sprite.Sprite):
 
     def __init__(self, num):
         super().__init__()
-        self.image = pygame.image.load("images/% sdigitcol.png" % num).convert_alpha(display_surface)
+        self.image = pygame.image.load("images/%sdigitcol.png" % num).convert_alpha(display_surface)
         self.rect = self.image.get_rect()
         self.num = num
         if num == 1:
@@ -30,4 +31,4 @@ class Number(pygame.sprite.Sprite):
         self.rect.move_ip(rel)
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect) 
+        surface.blit(self.image, self.rect)
