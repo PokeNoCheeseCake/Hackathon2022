@@ -15,6 +15,7 @@ class Number(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("images/% sdigitcol.png" % num).convert_alpha(display_surface)
         self.rect = self.image.get_rect()
+        self.num = num
         if num == 1:
             self.rect[0] = 5
             self.rect[1] = 5
