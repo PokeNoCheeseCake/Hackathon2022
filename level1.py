@@ -4,6 +4,7 @@ from car import Car
 from vector import Vector
 from constants import Constants
 from number import Number
+from utils import blit_rotate_center
 
 
 def play_level():
@@ -30,35 +31,46 @@ def play_level():
 
     car_array = []
 
-    car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(635, 632), 0.0, 1.5)
+    curve_arrow = pygame.image.load(Constants.CURVE_ARROW_IMG.value)
+    curve_arrow = pygame.transform.scale(curve_arrow, (50, 50))
+
+    straight_arrow = pygame.image.load(Constants.STRAIGHT_ARROW_IMG.value)
+    straight_arrow = pygame.transform.scale(straight_arrow, (50, 70))
+
+    car = Car(pygame.image.load(Constants.RED_CAR_IMG.value), Vector(635, 632), 0.0, 1.5, curve_arrow)
     car.speed = 10
     wanted_angle = (car.angle + 90) % 360
 
-    car2 = Car(pygame.image.load(Constants.BLUE_CAR_IMG.value), Vector(860, 250), 90.0, 1.5)
+    car2 = Car(pygame.image.load(Constants.BLUE_CAR_IMG.value), Vector(860, 250), 90.0, 1.5, straight_arrow)
     car2.speed = 10
     wanted_angle2 = car2.angle
 
-    car3 = Car(pygame.image.load(Constants.GREEN_CAR_IMG.value), Vector(360, 70), 180.0, 1.5)
+    car3 = Car(pygame.image.load(Constants.GREEN_CAR_IMG.value), Vector(360, 70), 180.0, 1.5, curve_arrow)
     car3.speed = 10
     wanted_angle3 = (car.angle - 90) % 360
 
     car_array.append({
         'car': car3,
         'wanted_angle': wanted_angle3,
-        'num': 0
+        'num': 0,
+        'bad': False
     })
 
     car_array.append({
         'car': car2,
         'wanted_angle': wanted_angle2,
-        'num': 0
+        'num': 0,
+        'bad': False
     })
 
     car_array.append({
         'car': car,
         'wanted_angle': wanted_angle,
-        'num': 0
+        'num': 0,
+        'bad': False
     })
+
+    stop_sign = pygame.image.load(Constants.STOP_SIGN_IMG.value)
 
     current_car = 0
     count_placed_numbers = 0
@@ -114,6 +126,7 @@ def play_level():
             update_car(screen, obj['car'], obj['wanted_angle'], False)
             car_index = car_index + 1
 
+        blit_rotate_center(screen, stop_sign, (700, 600), 0)
         number_group.draw(screen)
         pygame.display.update()
         pygame.display.flip()
@@ -131,6 +144,8 @@ def play_level():
 
         screen.blit(image, image.get_rect())
 
+        blit_rotate_center(screen, stop_sign, (700, 600), 0)
+
         while car_index < len(car_array):
             obj = car_array[car_index]
             bad_car = None
@@ -145,6 +160,7 @@ def play_level():
                     for obj2 in car_array:
                         if current_car + 1 == obj2['num']:
                             bad_car = obj2
+                            bad_car['bad'] = True
 
                     update_car(screen, bad_car['car'], bad_car['wanted_angle'], True)
 
@@ -157,7 +173,8 @@ def play_level():
                     'car'].position.get_y() > Y or obj['car'].position.get_y() < 0:
                     current_car = current_car + 1
             else:
-                update_car(screen, obj['car'], obj['wanted_angle'], False)
+                if obj['bad'] == False:
+                    update_car(screen, obj['car'], obj['wanted_angle'], False)
 
             car_index = car_index + 1
 
@@ -187,7 +204,7 @@ def update_car(screen, car, wanted_angle, move=False):
             car.rotate(wanted_angle)
 
         car.move()
-    car.draw(screen)
+    car.draw(screen, not move)
 
 
 def near_car(car, x, y):
