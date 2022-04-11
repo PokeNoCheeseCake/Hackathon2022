@@ -5,6 +5,7 @@ from vector import Vector
 from constants import Constants
 from number import Number
 
+
 def play_level():
     clock = pygame.time.Clock()
 
@@ -76,11 +77,11 @@ def play_level():
     dragged_num = None
 
     while count_placed_numbers < 3:
-        for event in pygame.event.get() :
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
-            # deactivates the pygame library
+                # deactivates the pygame library
                 pygame.quit()
-            # quit the program.
+                # quit the program.
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for x in number_group:
@@ -152,20 +153,20 @@ def play_level():
                         crash(bad_car['car'])
                         current_car = 3
 
-                if obj['car'].position.get_x() > X or obj['car'].position.get_x() < 0 or obj['car'].position.get_y() > Y or obj['car'].position.get_y() < 0:
+                if obj['car'].position.get_x() > X or obj['car'].position.get_x() < 0 or obj[
+                    'car'].position.get_y() > Y or obj['car'].position.get_y() < 0:
                     current_car = current_car + 1
             else:
                 update_car(screen, obj['car'], obj['wanted_angle'], False)
 
             car_index = car_index + 1
 
-        for event in pygame.event.get() :
+        for event in pygame.event.get():
 
             # if event object type is QUIT
             # then quitting the pygame
             # and program both.
-            if event.type == pygame.QUIT :
-
+            if event.type == pygame.QUIT:
                 # deactivates the pygame library
                 pygame.quit()
 
@@ -179,25 +180,20 @@ def play_level():
 
     return success
 
+
 def update_car(screen, car, wanted_angle, move=False):
     if move:
         if car.angle != wanted_angle:
             car.rotate(wanted_angle)
 
         car.move()
-
     car.draw(screen)
 
+
 def near_car(car, x, y):
-    return car.position.x - 50 < x and car.position.x + 50 > x and car.position.y - 50 < y and car.position.y + 50 > y
+    return car.position.x - 50 < x < car.position.x + 50 and car.position.y - 50 < y < car.position.y + 50
+
 
 def crash(car):
     car.speed = 0
     car.rotation_val = 0
-
-
-
-
-
-
-
