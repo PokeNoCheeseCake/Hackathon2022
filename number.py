@@ -24,7 +24,6 @@ class Number(pygame.sprite.Sprite):
         if num == 3:
             self.rect[0] = 52
             self.rect[1] = 3
-        print(self.rect)
 
     def move(self):
         self.pos = self.pos.move(0, self.speed)

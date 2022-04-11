@@ -1,4 +1,6 @@
 import pygame, sys
+
+import utils
 from MenuButton import Button
 from constants import Constants
 import level1
@@ -16,13 +18,23 @@ BG = pygame.transform.scale(BG, (Constants.GAME_WIDTH.value, Constants.GAME_HEIG
 def laws():
     BG2 = pygame.image.load(Constants.LAW.value)
     BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
-    running = True
-    while running:
+
+    while True:
         screen.blit(BG2, (0, 0))
+        back_img = pygame.image.load(Constants.BUTTON_BACK.value)
+        back_img = pygame.transform.scale(back_img, (50, 50))
+        screen.blit(back_img, (Constants.GAME_WIDTH.value - 60, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit(0)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                # back button: top = 0, bot = 45, left = 968, right = 1011
+                if 0 <= mouse_y <= 45 and 968 <= mouse_x <= 1011:
+                    # return to menu
+                    return
 
         pygame.display.update()
 
@@ -30,13 +42,23 @@ def laws():
 def about():
     BG2 = pygame.image.load(Constants.ABOUT.value)
     BG2 = pygame.transform.scale(BG2, (Constants.GAME_WIDTH.value, Constants.GAME_HEIGHT.value))
-    running = True
-    while running:
+
+    while True:
         screen.blit(BG2, (0, 0))
+        back_img = pygame.image.load(Constants.BUTTON_BACK.value)
+        back_img = pygame.transform.scale(back_img, (50, 50))
+        screen.blit(back_img, (Constants.GAME_WIDTH.value - 60, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit(0)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                # top = 0, bot = 45, left = 968, right = 1011
+                if 0 <= mouse_y <= 45 and 968 <= mouse_x <= 1011:
+                    # return to menu
+                    return
 
         pygame.display.update()
 
@@ -52,8 +74,8 @@ def display_menu():
                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 3.5),
                              text_input="PLAY", font=font, base_color="#d7fcd4", hovering_color="White")
         LAWS_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
-                              pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
-                              text_input="or yarok", font=font, base_color="#d7fcd4", hovering_color="White")
+                             pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 2.1),
+                             text_input="TRAFFIC LAWS", font=font, base_color="#d7fcd4", hovering_color="White")
         ABOUT_BUTTON = Button(image=pygame.image.load(Constants.BUTTON_RECT.value),
                               pos=(Constants.GAME_WIDTH.value / 2, Constants.GAME_HEIGHT.value / 1.5),
                               text_input="ABOUT", font=font, base_color="#d7fcd4", hovering_color="White")
